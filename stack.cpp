@@ -12,7 +12,6 @@ void STACK::push(const int data)
 {
  if(STACK::capacity>STACK::active_stack->top){
     STACK::active_stack->arr[active_stack->top]=data;
-    if(STACK::active_stack->top<STACK::capacity)
     STACK::active_stack->top+=1;
  }
  else
@@ -35,50 +34,30 @@ else if(active_stack->top==0){
  active_stack->arr=nullptr;
  delete STACK::active_stack;
  STACK::active_stack=temp;
- int value=temp->arr[temp->top-1];
- temp->arr[temp->top]=0;
  temp->top-=1;
+ int value=temp->arr[temp->top];
+ temp->arr[temp->top]=0;
  return value;
 }
 else
 {
-    int value=STACK::active_stack->arr[active_stack->top-1];
-    STACK::active_stack->arr[active_stack->top]=0;
     STACK::active_stack->top-=1;
+    int value=STACK::active_stack->arr[active_stack->top];
+    STACK::active_stack->arr[active_stack->top]=0;
     return value;
 }   
 }
 STACK::~STACK()
 {
     STACK_BLOCK* temp;
-    while(STACK::active_stack->prev!=BLOCK){     
+    while(STACK::active_stack!=nullptr){     
     temp= STACK::active_stack;
     STACK::active_stack=STACK::active_stack->prev;
     delete[] temp->arr;
     temp->arr=nullptr;
     delete temp;
     }
-    if(STACK::active_stack->prev==BLOCK){
-        STACK::active_stack->prev=nullptr;
-        temp=nullptr;
-        delete[] BLOCK->arr;
-        BLOCK->arr=nullptr;
-        delete BLOCK;
-        delete[] STACK::active_stack->arr;
-        active_stack->arr=nullptr;
-        delete STACK::active_stack;
-        BLOCK=nullptr;
-        STACK::active_stack=nullptr;
-        return;
-    }
-    delete[] STACK::active_stack->arr;
-    active_stack->arr=nullptr;
-    delete[] BLOCK->arr;
-    BLOCK->arr=nullptr;
-    delete STACK::active_stack;
-    delete BLOCK;
-    STACK::active_stack=nullptr;
-    BLOCK= nullptr;
+    BLOCK=nullptr;
 }
 
 
