@@ -1,6 +1,6 @@
 # Fragmented stacks
 
-**Status: work in progress.** The latest local implementation passes the five existing sanitizer stress tests. The published implementation still contains earlier pop/destructor bugs; the passing results below do not certify the current GitHub source.
+**Status: work in progress.** The published source matches the local implementation that passed all five existing sanitizer stress tests. Remaining limitations are documented below.
 
 The stack stores integer values in linked blocks of fixed-size arrays. `stack.cpp` and `stack.hpp` contain the implementation; `main.cpp` contains the stress tests.
 
@@ -20,9 +20,9 @@ done
 
 Each scenario runs in a separate process with block capacity 5. Returned values are checked against a `std::vector` reference. Destruction runs once through `std::unique_ptr::reset()` if execution reaches that point.
 
-## Latest local results — November 7, 2026
+## Latest test results — November 7, 2026
 
-Run: `rerun-20261107-215136`.
+Run: `rerun-20261107-215636`.
 
 | Scenario | Operations | Result |
 | --- | --- | --- |
@@ -34,12 +34,12 @@ Run: `rerun-20261107-215136`.
 
 All five processes exited with code 0. No AddressSanitizer, UndefinedBehaviorSanitizer, or LeakSanitizer errors were reported. The build still warns about `#endif STACK_HPP`; the intended spelling is `#endif // STACK_HPP`.
 
-These results apply to the newer local source, where `pop()` clears `arr[top - 1]` and the destructor walks the block chain until null. The GitHub implementation inspected at commit `0cc3a8eea126715b93f0ead665f280083a06d8ef` still uses `arr[top]` and the older destructor. Running the published source can therefore still reproduce the earlier failures.
+These results were obtained locally from the exact source now published in this repository. In `pop()`, `top` is decremented before accessing and clearing `arr[top]`; the destructor walks the block chain until null. All three source files were compared with the passing test snapshot before publication. These are local test results, not a GitHub Actions run.
 
 Tested source SHA-256 hashes:
 
 ```text
-stack.cpp  1994054365d1ff896cbc8e0539e1256bf7e29098089cd9ac9a530862a9dd1d00
+stack.cpp  146ba15952e1d2432fbb51dea6fe72d1d182f571ef58adde706ab89418c66e54
 stack.hpp  d5fc9377fd514710e2a102b7a6f12c5be33cdfb3ba85396f86db80db7151435f
 main.cpp   21443d740b44439334280b276e9c7c7471294019fb1cd3bbdea9060700f1a49e
 ```
