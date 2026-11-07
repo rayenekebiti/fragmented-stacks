@@ -36,14 +36,6 @@ All five processes exited with code 0. No AddressSanitizer, UndefinedBehaviorSan
 
 These results were obtained locally from the exact source now published in this repository. In `pop()`, `top` is decremented before accessing and clearing `arr[top]`; the destructor walks the block chain until null. All three source files were compared with the passing test snapshot before publication. These are local test results, not a GitHub Actions run.
 
-Tested source SHA-256 hashes:
-
-```text
-stack.cpp  146ba15952e1d2432fbb51dea6fe72d1d182f571ef58adde706ab89418c66e54
-stack.hpp  d5fc9377fd514710e2a102b7a6f12c5be33cdfb3ba85396f86db80db7151435f
-main.cpp   21443d740b44439334280b276e9c7c7471294019fb1cd3bbdea9060700f1a49e
-```
-
 ## Current limitations
 
 - **Unsafe copying:** the implicit copy constructor copies owning pointers. Two copied stacks can access or destroy the same storage. Copying needs to be disabled or implemented as a deep copy.
