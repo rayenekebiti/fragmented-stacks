@@ -12,6 +12,8 @@ class STACK{
     const int capacity;
 public:
     STACK(const int size);
+    STACK(const STACK&)=delete;
+    STACK& operator=(const STACK&)=delete;
     ~STACK();
     void push(const int data);
     int pop();

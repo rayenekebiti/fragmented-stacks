@@ -3,6 +3,10 @@
 
 STACK::STACK(int size):capacity(size)
 {
+    if(capacity<=0)
+    {
+        throw std::out_of_range("stack size can't be less or equal 0");
+    }
     BLOCK=new STACK_BLOCK{};
     STACK::active_stack=BLOCK;
     active_stack->arr=new int[capacity];

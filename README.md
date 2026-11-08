@@ -38,8 +38,8 @@ These results were obtained locally from the exact source now published in this 
 
 ## Current limitations
 
-- **Unsafe copying:** the implicit copy constructor copies owning pointers. Two copied stacks can access or destroy the same storage. Copying needs to be disabled or implemented as a deep copy.
-- **Invalid capacities:** the constructor does not reject zero or negative capacities. Zero capacity causes repeated block allocation and recursion on push.
+Copy construction and copy assignment are now explicitly deleted. The constructor rejects zero and negative capacities with `std::out_of_range`.
+
 - **Allocation exception safety:** a block can leak if its subsequent array allocation throws, both during construction and growth.
 - **Limited coverage:** the five tests use only capacity 5. They do not cover capacity 1, invalid capacities, copying, allocation failures, or repeated drain/refill cycles across block boundaries.
 - **Empty-pop behavior is untested:** the `empty` scenario checks destruction only; it does not call `pop()` on an empty stack.
